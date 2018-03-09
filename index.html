@@ -17,8 +17,8 @@
         <input type="text" id="animal-inpiut"><br>
         <input id="addAnimal" type="submit" value="Submit">
     </form>
-    <div id="animal" class ="container"></div>
-    <div class="row"></div>
+    <div id="animal"></div>
+    
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
@@ -56,21 +56,23 @@
                 var source = response[i].images.downsized.url
                 var still = response[i].images.downsized_still.url
                 var rating = response[i].rating
-                var div = $("<div>")
+                //var div = $("<div>")
                 var image = $("<img>")
                 var p = $("<p>")
-                div.attr("class","col")
-                div.attr("id","image")
+                //div.attr("class","col")
                 image.attr("src",source)
                 image.attr("class","images")
+                image.attr("data-still",still)
                 image.attr("data-animate",source)
                 image.attr("data-state","animate")
+                image.attr("id",i)
                 p.text("Rating: "+ rating)
-                div.append(p)
-                div.append(image)
-                $("#animal").append(div)
-                //$("#animal").append(p)
-                //$("#animal").append(image)
+                //div.append(p)
+                //div.append(image)
+                //$("#animal").append(div)
+                $("#animal").append(p)
+                $("#animal").append(image)
+
                 console.log(response)
             }
 
@@ -82,9 +84,15 @@
 
     })
 
-    $("#image").click(function(){
-        var state = $(this).attr("data-state");
+   $("#animal").click(function(){
+        var state = $(this).children().attr("id")
         console.log(state);
+
+        //if (state === "animate") {
+            //var still = $(this).children("img").attr("data-still")
+            //$(this).children("img").attr("src", still)
+            //$(this).children("img").attr("data-state", "still")
+        //}
     })
 
 
