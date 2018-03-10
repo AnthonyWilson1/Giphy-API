@@ -12,10 +12,10 @@
   <body>
 
     <div id="animalButtons"></div>
-    <form id="animalForm">
+    <form id="animalForm" action="">
         <label for"animal-input">Add an animal</label>
-        <input type="text" id="animal-inpiut"><br>
-        <input id="addAnimal" type="submit" value="Submit">
+        <input type="text" id="animalInput"><br>
+        <input id="addAnimal" type="button" value="Add" onclick="addTopic()">
     </form>
     <div id="animal"></div>
     
@@ -27,22 +27,25 @@
 
         var topics = ["dog","cat","rabbit","hamster"];
 
+        var addedTopic = []
+
         //var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=" + API + "&q=" + id + "&limit=10&offset=0&lang=en"
 
-      for (i = 0; i < topics.length; i++) {
+      function buttons(array) { 
+
+      for (i = 0; i < array.length; i++) {
           var button = $("<button>")
-          button.attr("id",topics[i])
-          button.attr("value",topics[i])
+          button.attr("id",array[i])
+          button.attr("value",array[i])
           button.attr("class","button")
           button.attr("name","button")
-          button.text(topics[i])
+          button.text(array[i])
           $("#animalButtons").append(button)
       }
-
-    $(document).ready(function() {
+    }
     
-    $(".button").click(function(){
-    var id = $(this).attr("id")
+    function images(param) {
+    var id = $(param).attr("id")
     var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=" + API + "&q=" + id + "&limit=10&offset=0&lang=en"
    
         $.ajax({
@@ -56,10 +59,8 @@
                 var source = response[i].images.downsized.url
                 var still = response[i].images.downsized_still.url
                 var rating = response[i].rating
-                //var div = $("<div>")
                 var image = $("<img>")
                 var p = $("<p>")
-                //div.attr("class","col")
                 image.attr("src",source)
                 image.attr("class","images")
                 image.attr("data-still",still)
@@ -67,35 +68,45 @@
                 image.attr("data-state","animate")
                 image.attr("id",i)
                 p.text("Rating: "+ rating)
-                //div.append(p)
-                //div.append(image)
-                //$("#animal").append(div)
                 $("#animal").append(p)
                 $("#animal").append(image)
-
                 console.log(response)
             }
 
-        });
-
+        })
+    }
+    
+    $(document).on("click",".button", function() {
+        images(this);
     })
 
-   
-
-    })
-
-   $("#animal").click(function(){
-        var state = $(this).children().attr("id")
+   $(document).on("click",".images", function(){
+        var state = $(this).attr("data-state")
         console.log(state);
 
-        //if (state === "animate") {
-            //var still = $(this).children("img").attr("data-still")
-            //$(this).children("img").attr("src", still)
-            //$(this).children("img").attr("data-state", "still")
-        //}
-    })
+        if (state === "animate") {
+            var still = $(this).attr("data-still")
+            $(this).attr("src", still)
+            $(this).attr("data-state", "still")
+        }
+        if (state === "still") {
+          var animate = $(this).attr("data-animate")
+          $(this).attr("src", animate)
+          $(this).attr("data-state", "animate")
+        }
+    
+        })
+    
+    function addTopic() {
+        var topic = document.getElementById("animalInput")
+        var topicValue = topic.value
+        addedTopic.push(topicValue)
+        buttons(addedTopic)
+        addedTopic = []
+        return addedTopic
+    }
 
-
+    buttons(topics)
     
 
     </script>
