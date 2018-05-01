@@ -61,16 +61,15 @@
                 var rating = response[i].rating
                 var image = $("<img>")
                 var p = $("<p>")
-                image.attr("src",source)
+                image.attr("src",still)
                 image.attr("class","images")
                 image.attr("data-still",still)
                 image.attr("data-animate",source)
-                image.attr("data-state","animate")
+                image.attr("data-state","still")
                 image.attr("id",i)
                 p.text("Rating: "+ rating)
                 $("#animal").append(p)
                 $("#animal").append(image)
-                console.log(response)
             }
 
         })
@@ -82,7 +81,6 @@
 
    $(document).on("click",".images", function(){
         var state = $(this).attr("data-state")
-        console.log(state);
 
         if (state === "animate") {
             var still = $(this).attr("data-still")
